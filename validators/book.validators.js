@@ -30,10 +30,62 @@ const isbn = check("isbn", "El isbn es obligatoria")
     return true;
 });
 
+const autorId = check("id", "El id no es valido")
+.not().isEmpty()
+.isMongoId().withMessage("El id debe ser un id de mongo valido")
 
+const genre = check("genre", "El genero es obligatorio")
+.trim()
+.not().isEmpty()
+.isString()
+.isLength({ min: 10, max:30 })
+.withMessage("El genero debe tener entre 10 y 30 cracteres")
+.custom((value) => {
+    if (value.toLowerCase().includes("book")) {
+        throw new Error("El genero no puede contener la palabra 'book'");
+    }
+    return true;
+});
+
+const year = check("year", "El año es obligatorio")
+.trim()
+.not().isEmpty()
+.isNumeric()
+.custom((value) => {
+    if (value.toLowerCase()) {
+        throw new Error("El año no puede contener palabras");
+    }
+    return true;
+});
+
+const totalCopies = check("totalCopies", "El total de copias es obligatorio")
+.trim()
+.not().isEmpty()
+.isNumeric()
+.custom((value) => {
+    if (value.toLowerCase()) {
+        throw new Error("El total de copias no puede contener palabras");
+    }
+    return true;
+});
+
+const availableCopies = check("availableCopies", "Las copias disponibles es obligatoria")
+.trim()
+.not().isEmpty()
+.isNumeric()
+.custom((value) => {
+    if (value.toLowerCase()) {
+        throw new Error("Las copias disponibles no puede contner palabras");
+    }
+    return true;
+});
 
 export {
     bookId, 
     title,
-    isbn
+    isbn,
+    autorId,
+    genre,
+    totalCopies.
+    availableCopies
 }
